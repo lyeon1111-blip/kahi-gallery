@@ -173,6 +173,47 @@ legend,.fl{font-weight:700;margin-bottom:10px;font-size:16px}
   .hang{grid-template-columns:repeat(2,minmax(0,1fr))}
   .ticket .t1,.ticket .t2{padding-left:28px;padding-right:28px}
 }
+
+.menu-btn,.mcta{display:none}
+dialog{max-height:92vh;overflow:auto}
+@media (max-width:900px){
+  .hero .wrap{padding-top:28px;padding-bottom:48px;gap:8px}
+  .glyph{order:-1;font-size:clamp(240px,70vw,420px)}
+  .hero p{font-size:17px;margin:16px 0 24px}
+}
+@media (max-width:700px){
+  body{padding-bottom:84px}
+  .top .wrap{flex-wrap:nowrap;min-height:60px}
+  .brand span{display:none}
+  .menu-btn{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:999px;border:2px solid var(--ink);background:var(--paper);font-weight:700;cursor:pointer}
+  .nav{display:none;position:absolute;left:0;right:0;top:100%;background:var(--paper);border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;padding:8px 20px 16px;gap:2px}
+  .nav.open{display:flex}
+  .nav a{padding:14px 12px;font-size:17px}
+  .nav [data-open-upload]{display:none}
+  .mcta{display:block;position:fixed;left:0;right:0;bottom:0;z-index:30;padding:12px 20px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(rgba(255,253,251,0),var(--paper) 30%)}
+  .mcta .btn{width:100%;min-height:52px;font-size:17px}
+  .toast{bottom:96px}
+  section.band{padding:56px 0}
+  .head{margin-bottom:24px}
+  .hero .acts .btn{flex:1}
+  .hero .acts [data-open-upload]{display:none}
+  dialog{max-width:100vw;width:100vw;margin:auto 0 0;max-height:94vh}
+  .sheet{border-radius:22px 22px 0 0}
+  .lb .pic{padding:18px}
+  .lb .pic .frame{max-width:300px;padding:8px}
+  .lb .pic img{max-height:46vh}
+  .lb .info{padding:20px 20px 24px;gap:10px}
+  .lb .q{font-size:21px}
+  .lb .acts .btn{flex:1}
+  .up{padding:22px 20px 24px;gap:14px}
+  .up h2{font-size:24px}
+  .drop{min-height:88px;padding:12px}
+  .drop img{width:64px;height:80px}
+  .choices label{padding:10px 12px}
+  .choices small{display:none}
+  .field input[type=text]{min-height:46px}
+  .x{top:10px;right:10px}
+}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.toast{transition:none}}
 </style>
 </head>
@@ -180,7 +221,8 @@ legend,.fl{font-weight:700;margin-bottom:10px;font-size:16px}
 <header class="top">
   <div class="wrap">
     <a class="brand" href="#home"><img src="assets/kahi-logo-black.png" alt="KAHI 가히"><span>바른 면(面)을 모아보면,</span></a>
-    <nav class="nav" aria-label="주요 메뉴">
+    <button class="menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="main-nav">메뉴</button>
+    <nav class="nav" id="main-nav" aria-label="주요 메뉴">
       <a href="#home" data-nav="home">전시 소개</a>
       <a href="#gallery" data-nav="gallery">갤러리</a>
       <a href="#how" data-nav="how">참여 방법</a>
@@ -348,6 +390,7 @@ legend,.fl{font-weight:700;margin-bottom:10px;font-size:16px}
   </form>
 </dialog>
 
+<div class="mcta"><button class="btn" type="button" data-open-upload>내 바른 面 올리기</button></div>
 <div class="toast" id="toast" role="status"></div>
 
 <script src="config.js"></script>
@@ -481,6 +524,18 @@ $('lb-del').addEventListener('click', async () => {
   btn.disabled = false;
 });
 
+
+// mobile menu
+const mb = $('menu-btn'), mnav = $('main-nav');
+mb.addEventListener('click', () => { const o = !mnav.classList.contains('open'); mnav.classList.toggle('open', o); mb.setAttribute('aria-expanded', String(o)); mb.textContent = o ? '닫기' : '메뉴'; });
+mnav.addEventListener('click', e => { if (e.target.closest('a')) { mnav.classList.remove('open'); mb.setAttribute('aria-expanded','false'); mb.textContent = '메뉴'; } });
+// swipe in lightbox
+let tx = null;
+$('lightbox').addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+$('lightbox').addEventListener('touchend', e => {
+  if (tx == null) return; const dx = e.changedTouches[0].clientX - tx; tx = null;
+  if (Math.abs(dx) > 50) (dx < 0 ? $('lb-next') : $('lb-prev')).click();
+});
 // ---------- upload
 let pickedBlob = null;
 function openUpload() {
