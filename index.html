@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>바른 면(面)을 모아보면, — KAHI 온라인 갤러리</title>
+<style>
+@font-face{font-family:'KAHI';src:url(assets/KAHI-Light.woff2) format('woff2');font-weight:100 300;font-display:swap}
+@font-face{font-family:'KAHI';src:url(assets/KAHI-Medium.woff2) format('woff2');font-weight:400 600;font-display:swap}
+@font-face{font-family:'KAHI';src:url(assets/KAHI-Bold.woff2) format('woff2');font-weight:700 900;font-display:swap}
+@font-face{font-family:'Men';src:url(assets/men-black.woff2) format('woff2');font-weight:900;font-display:block}
+:root{
+  --wall:#FFA4C5; --blush:#FFE4EC; --paper:#FFFDFB; --ink:#3A1F27; --ink2:#5E3B45; --rose:#A8234A; --line:#F3C9D6;
+  --shadow:0 22px 44px rgba(150,30,70,.20); --shadow-s:0 10px 22px rgba(150,30,70,.13);
+  --font:'KAHI','Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);word-break:keep-all;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+.men{font-family:'Men','KAHI',sans-serif;font-weight:900}
+
+/* header */
+.top{position:sticky;top:0;z-index:20;background:rgba(255,253,251,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:72px;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
+.brand{display:flex;align-items:center;gap:14px;text-decoration:none}
+.brand img{height:22px;width:auto}
+.brand span{font-weight:700;font-size:16px;border-left:1px solid var(--line);padding-left:14px}
+.nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.nav a{text-decoration:none;font-weight:500;font-size:15px;padding:10px 12px;border-radius:999px}
+.nav a[aria-current="page"]{background:var(--blush);font-weight:700}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;border-radius:999px;border:2px solid var(--ink);background:var(--ink);color:var(--paper);font-weight:700;font-size:16px;text-decoration:none;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.small{min-height:44px;padding:0 18px;font-size:15px}
+.btn:disabled{opacity:.5;cursor:default}
+
+/* frames */
+.frame{background:var(--paper);padding:12px;box-shadow:var(--shadow)}
+.frame img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.label{background:var(--paper);box-shadow:var(--shadow-s);padding:20px 22px;display:flex;flex-direction:column;gap:8px}
+.label b{font-size:22px}
+.label .idiom{font-size:15px;font-weight:700;color:var(--rose)}
+.label p{margin:0;font-size:15px;line-height:1.6;color:var(--ink2)}
+
+/* hero */
+.hero{background:var(--wall);overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);align-items:center;gap:24px;padding-top:64px;padding-bottom:64px}
+.hero h1{margin:0;font-size:clamp(48px,6.4vw,92px);line-height:1.1;letter-spacing:-.02em;font-weight:700}
+.hero p{margin:22px 0 32px;font-size:19px;line-height:1.7;max-width:30em;font-weight:500}
+.hero .acts{display:flex;gap:12px;flex-wrap:wrap}
+.glyph{font-family:'Men',sans-serif;font-weight:900;font-size:clamp(300px,42vw,620px);line-height:1;text-align:center;
+  background-size:33.4% 33.4%;background-repeat:no-repeat;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 18px 30px rgba(150,30,70,.28))}
+
+/* sections */
+section.band{padding:88px 0}
+.band.blush{background:var(--blush)}
+.band.wall{background:var(--wall)}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:40px}
+.head h2{margin:0;font-size:clamp(32px,4vw,52px);letter-spacing:-.02em;font-weight:700}
+.head p{margin:10px 0 0;font-size:17px;color:var(--ink2);font-weight:500}
+.more{font-weight:700;font-size:16px}
+
+.hang{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:22px;align-items:start}
+.hang .work:nth-child(even){margin-top:42px}
+.work{margin:0;cursor:pointer;background:none;border:0;padding:0;text-align:left;width:100%}
+.work figcaption{padding:14px 4px 0;display:flex;flex-direction:column;gap:5px}
+.work .q{font-size:15px;font-weight:700;line-height:1.5}
+.work .by{font-size:13px;color:var(--ink2)}
+.work .new{display:inline-block;align-self:flex-start;background:var(--ink);color:var(--paper);font-size:12px;font-weight:700;border-radius:999px;padding:4px 10px}
+
+.rooms{display:flex;flex-direction:column;gap:36px;max-width:860px;margin:0 auto}
+.room{display:flex;align-items:center;gap:44px}
+.room:nth-child(even){flex-direction:row-reverse}
+.room .frame{width:260px;flex:none}
+.room .label{flex:1;max-width:420px}
+.room .label a{margin-top:8px;align-self:flex-start}
+
+.spot{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center}
+.spot .frame img{aspect-ratio:1/1;object-fit:contain;background:#fff}
+.spot h2{margin:0;font-size:clamp(32px,4vw,52px);line-height:1.2;letter-spacing:-.02em}
+.spot p{font-size:17px;line-height:1.75;color:var(--ink2);margin:18px 0 26px}
+.review{display:flex;gap:16px;align-items:center;background:var(--paper);box-shadow:var(--shadow-s);padding:14px;margin-bottom:26px}
+.review img{width:72px;height:72px;object-fit:cover}
+.review span{font-weight:700;line-height:1.5}
+
+.ticket{max-width:780px;margin:0 auto;background:var(--paper);border-radius:28px;box-shadow:0 30px 60px rgba(150,30,70,.25);transform:rotate(-1deg)}
+.ticket .t1{padding:48px 52px 36px}
+.ticket .row{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.ticket .row img{height:22px}
+.ticket .row span{color:var(--rose);font-weight:700}
+.ticket h2{font-size:clamp(36px,4.4vw,56px);margin:26px 0 10px;line-height:1.15;letter-spacing:-.02em}
+.ticket ol{list-style:none;margin:0;padding:0}
+.ticket li{display:flex;gap:24px;align-items:baseline;padding:18px 0;border-top:2px solid var(--line)}
+.ticket li b{font-size:40px;color:var(--rose);width:34px;flex:none;line-height:1}
+.ticket li strong{display:block;font-size:24px;margin-bottom:4px}
+.ticket li span{font-size:16px;line-height:1.6;color:var(--ink2)}
+.ticket .t2{position:relative;border-top:3px dashed var(--line);padding:30px 52px 40px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.ticket .t2::before,.ticket .t2::after{content:"";position:absolute;top:-26px;width:48px;height:48px;border-radius:50%;background:var(--wall)}
+.ticket .t2::before{left:-26px}.ticket .t2::after{right:-26px}
+.ticket .t2 small{display:block;font-size:14px;color:var(--ink2);margin-bottom:4px}
+.ticket .t2 strong{font-size:24px}
+
+footer{border-top:1px solid var(--line);padding:32px 0;font-size:14px;color:var(--ink2)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+footer img{height:16px}
+
+/* gallery view */
+.ghead{background:var(--wall);padding:56px 0 40px}
+.ghead h1{margin:0;font-size:clamp(40px,5vw,68px);letter-spacing:-.02em}
+.ghead p{margin:12px 0 0;font-size:18px;font-weight:500;max-width:36em;line-height:1.6}
+.ghead .idiom{display:inline-block;margin-top:14px;background:var(--paper);color:var(--rose);font-weight:700;padding:8px 16px;border-radius:999px;font-size:15px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:28px}
+.tabs a{text-decoration:none;min-height:44px;display:inline-flex;align-items:center;padding:0 18px;border-radius:999px;border:2px solid var(--ink);font-weight:700;font-size:15px}
+.tabs a[aria-current="page"]{background:var(--ink);color:var(--paper)}
+.wall-grid{columns:4 240px;column-gap:28px;padding:56px 0 24px}
+.wall-grid .work{break-inside:avoid;margin:0 0 36px;display:block}
+.empty{padding:40px;text-align:center;background:var(--blush);font-weight:500;line-height:1.7}
+.status{font-size:14px;color:var(--ink2);padding-bottom:40px}
+
+/* dialogs */
+dialog{border:0;padding:0;background:transparent;max-width:min(980px,94vw);width:100%}
+dialog::backdrop{background:rgba(58,31,39,.55)}
+.sheet{background:var(--paper);border-radius:24px;box-shadow:0 30px 70px rgba(0,0,0,.3);overflow:hidden}
+.lb{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)}
+.lb .pic{background:var(--wall);padding:32px;display:flex;align-items:center;justify-content:center}
+.lb .pic .frame{width:100%;max-width:420px}
+.lb .info{padding:36px;display:flex;flex-direction:column;gap:14px}
+.lb .room-n{color:var(--rose);font-weight:700}
+.lb .q{font-size:26px;font-weight:700;line-height:1.45;margin:0}
+.lb .by{color:var(--ink2)}
+.lb .tag{align-self:flex-start;display:flex;gap:8px;align-items:center;border:2px solid var(--ink);border-radius:999px;padding:6px 14px;font-weight:700;font-size:14px;text-decoration:none}
+.lb .tag i{width:9px;height:9px;border-radius:50%;background:var(--rose)}
+.lb .acts{margin-top:auto;display:flex;gap:10px;flex-wrap:wrap}
+.x{position:absolute;right:14px;top:14px;width:44px;height:44px;border-radius:50%;border:0;background:var(--paper);box-shadow:var(--shadow-s);cursor:pointer;font-size:22px;line-height:1}
+.up{padding:36px;display:flex;flex-direction:column;gap:22px;max-width:620px;margin:0 auto}
+.up h2{margin:0;font-size:32px}
+.up .hint{margin:-12px 0 0;color:var(--ink2);line-height:1.6}
+.drop{display:flex;gap:18px;align-items:center;border:2px dashed var(--ink2);border-radius:16px;padding:16px;cursor:pointer;min-height:120px;background:var(--blush)}
+.drop img{width:88px;height:110px;object-fit:cover;background:var(--paper)}
+.drop input{position:absolute;width:1px;height:1px;opacity:0}
+fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+legend,.fl{font-weight:700;margin-bottom:10px;font-size:16px}
+.choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.choices label{border:2px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;display:flex;flex-direction:column;gap:4px;min-height:44px}
+.choices label:has(input:checked){border-color:var(--ink);background:var(--blush)}
+.choices input{position:absolute;opacity:0}
+.choices b{font-size:16px}.choices small{color:var(--ink2);line-height:1.4}
+.field input[type=text]{width:100%;min-height:48px;border:2px solid var(--line);border-radius:12px;padding:10px 14px;font-size:16px;background:#fff}
+.field input[type=text]:focus{border-color:var(--ink);outline:none}
+.count{font-size:13px;color:var(--ink2);text-align:right;margin-top:6px}
+.err{color:var(--rose);font-weight:700;min-height:1em;margin:0}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:14px 22px;border-radius:999px;font-weight:700;z-index:50;opacity:0;pointer-events:none;transition:opacity .25s}
+.toast.on{opacity:1}
+[hidden]{display:none!important}
+
+@media (max-width:900px){
+  .hero .wrap,.spot,.lb{grid-template-columns:1fr}
+  .hang{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .hang .work:nth-child(even){margin-top:0}
+  .room,.room:nth-child(even){flex-direction:column;align-items:stretch}
+  .room .frame{width:min(320px,100%);align-self:center}
+  .room .label{max-width:none}
+  .choices{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .wrap{padding:0 20px}
+  .hang{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ticket .t1,.ticket .t2{padding-left:28px;padding-right:28px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.toast{transition:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#home"><img src="assets/kahi-logo-black.png" alt="KAHI 가히"><span>바른 면(面)을 모아보면,</span></a>
+    <nav class="nav" aria-label="주요 메뉴">
+      <a href="#home" data-nav="home">전시 소개</a>
+      <a href="#gallery" data-nav="gallery">갤러리</a>
+      <a href="#how" data-nav="how">참여 방법</a>
+      <button class="btn small" type="button" data-open-upload>내 바른 面 올리기</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- HOME -->
+<div id="view-home">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <h1>바른 면(面)을<br>모아보면,</h1>
+        <p>나를 돌보는 작은 정성부터 서로의 체면을 세워주는 순간까지. 당신의 하루에서 찾은 바른 面을 모아 가히의 온라인 갤러리에 겁니다.</p>
+        <div class="acts">
+          <a class="btn" href="#gallery">갤러리 둘러보기</a>
+          <button class="btn ghost" type="button" data-open-upload>내 바른 面 올리기</button>
+        </div>
+      </div>
+      <div class="glyph" id="glyph" role="img" aria-label="참여자 사진들로 채운 面 글자">面</div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="head">
+        <div><h2>오늘 걸린 面</h2><p>가장 최근에 수집된 여섯 점</p></div>
+        <a class="more" href="#gallery">전체 보기</a>
+      </div>
+      <div class="hang" id="latest"></div>
+    </div>
+  </section>
+
+  <section class="band blush">
+    <div class="wrap">
+      <div class="head"><div><h2>세 개의 전시실</h2><p>당신의 面은 어느 방에 걸릴까요</p></div></div>
+      <div class="rooms" id="rooms"></div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap spot">
+      <div class="frame"><img src="assets/product-set.jpg" alt="가히 톤플로우 스틱 파운데이션과 브러시"></div>
+      <div>
+        <h2>바쁜 아침에도,<br>슥 하고 차린 面</h2>
+        <p>'나를 가꾸는 面' 전시실에는 가히 스틱 파운데이션으로 하루를 단정하게 시작한 순간들이 걸려요. 지하철에서, 엘리베이터에서, 1교시 직전에. 각자의 아침이 곧 사용 후기가 됩니다.</p>
+        <div class="review"><img src="assets/care-stick.jpg" alt=""><span>“늦잠 잔 아침에도 슥, 오늘도 단정하게.”</span></div>
+        <div class="acts" style="display:flex;gap:12px;flex-wrap:wrap">
+          <a class="btn" href="#care">가꾸는 面 전시실</a>
+          <a class="btn ghost" href="https://kahi.co.kr" target="_blank" rel="noopener">가히 공식몰에서 보기</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band wall" id="how">
+    <div class="wrap">
+      <div class="ticket">
+        <div class="t1">
+          <div class="row"><img src="assets/kahi-logo-black.png" alt="KAHI 가히"><span>온라인 갤러리 입장권</span></div>
+          <h2>나의 面을<br>거는 방법</h2>
+          <ol>
+            <li><b>1</b><div><strong>찾기</strong><span>오늘 나를 가꾸고, 지키고, 함께 세운 순간을 떠올려요.</span></div></li>
+            <li><b>2</b><div><strong>남기기</strong><span>사진 한 장에 한 줄을 붙여 여기서 바로 올리거나, 인스타그램에 #바른면수집프로젝트로 올려요.</span></div></li>
+            <li><b>3</b><div><strong>걸리기</strong><span>모인 面은 세 전시실 중 한 곳에 걸려요.</span></div></li>
+          </ol>
+        </div>
+        <div class="t2">
+          <div><small>입장료</small><strong>사진 한 장, 문장 한 줄</strong></div>
+          <button class="btn" type="button" data-open-upload>내 바른 面 올리기</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- GALLERY -->
+<div id="view-gallery" hidden>
+  <section class="ghead">
+    <div class="wrap">
+      <h1 id="g-title">전체 전시</h1>
+      <p id="g-desc"></p>
+      <span class="idiom" id="g-idiom" hidden></span>
+      <nav class="tabs" aria-label="전시실">
+        <a href="#gallery" data-tab="gallery">전체</a>
+        <a href="#care" data-tab="care">나를 가꾸는 面</a>
+        <a href="#keep" data-tab="keep">나를 지키는 面</a>
+        <a href="#raise" data-tab="raise">함께 세우는 面</a>
+      </nav>
+    </div>
+  </section>
+  <div class="wrap">
+    <div class="wall-grid" id="grid"></div>
+    <p class="status" id="status" aria-live="polite"></p>
+  </div>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><img src="assets/kahi-logo-black.png" alt="KAHI 가히" style="display:inline-block;vertical-align:middle"> 바른 면(面)을 모아보면, 온라인 갤러리</span>
+    <span>콤마 3팀 기획 시안</span>
+  </div>
+</footer>
+
+<!-- Lightbox -->
+<dialog id="lightbox" aria-label="작품 보기">
+  <div class="sheet lb" style="position:relative">
+    <div class="pic"><div class="frame"><img id="lb-img" alt=""></div></div>
+    <div class="info">
+      <span class="room-n" id="lb-room"></span>
+      <p class="q" id="lb-q"></p>
+      <span class="by" id="lb-by"></span>
+      <a class="tag" id="lb-tag" href="https://kahi.co.kr" target="_blank" rel="noopener" hidden><i></i>가히 스틱 파운데이션</a>
+      <div class="acts">
+        <button class="btn ghost small" type="button" id="lb-prev">이전 작품</button>
+        <button class="btn ghost small" type="button" id="lb-next">다음 작품</button>
+        <button class="btn small" type="button" id="lb-del" hidden>전시에서 내리기</button>
+      </div>
+    </div>
+    <button class="x" type="button" id="lb-close" aria-label="닫기">×</button>
+  </div>
+</dialog>
+
+<!-- Upload -->
+<dialog id="upload" aria-labelledby="up-title">
+  <form class="sheet" id="up-form" style="position:relative" novalidate>
+    <div class="up">
+      <h2 id="up-title">내 바른 面 올리기</h2>
+      <p class="hint" id="up-hint">사진 한 장과 한 줄이면 전시돼요. 올린 面은 이 갤러리를 보는 모두에게 보여요.</p>
+      <div id="up-off" class="empty" hidden></div>
+      <div id="up-on">
+        <label class="drop" for="up-file">
+          <img id="up-prev" alt="" hidden>
+          <span id="up-drop-t"><b>사진 고르기</b><br>JPG·PNG 사진 한 장 (끌어다 놓아도 돼요)</span>
+          <input type="file" id="up-file" accept="image/jpeg,image/png,image/webp,image/heic">
+        </label>
+        <fieldset style="margin-top:22px">
+          <legend>어느 전시실에 걸까요?</legend>
+          <div class="choices">
+            <label><input type="radio" name="room" value="care" checked><b>나를 가꾸는 面</b><small>나와 아끼는 것을 돌본 순간</small></label>
+            <label><input type="radio" name="room" value="keep"><b>나를 지키는 面</b><small>흐트러져도 기준을 붙잡은 순간</small></label>
+            <label><input type="radio" name="room" value="raise"><b>함께 세우는 面</b><small>누군가의 面을 세워준 순간</small></label>
+          </div>
+        </fieldset>
+        <div class="field" style="margin-top:22px">
+          <label class="fl" for="up-text">한 줄</label>
+          <input type="text" id="up-text" maxlength="40" placeholder="늦잠 잔 아침에도 슥, 오늘도 단정하게." autocomplete="off">
+          <div class="count"><span id="up-count">0</span>/40</div>
+        </div>
+        <div class="field" style="margin-top:6px">
+          <label class="fl" for="up-name">전시에 표시할 이름 (선택)</label>
+          <input type="text" id="up-name" maxlength="16" placeholder="비워두면 '익명의 관람객'" autocomplete="off">
+        </div>
+        <p class="err" id="up-err" role="alert" style="margin-top:14px"></p>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:10px">
+          <button class="btn ghost" type="button" data-close-upload>취소</button>
+          <button class="btn" type="submit" id="up-submit">전시하기</button>
+        </div>
+      </div>
+    </div>
+    <button class="x" type="button" data-close-upload aria-label="닫기">×</button>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script src="config.js"></script>
+<script>
+(() => {
+const ROOMS = {
+  care:  {name:'나를 가꾸는 面', idiom:'체면을 차리다', def:'나와 내가 아끼는 것을 정성껏 돌보는 순간', cover:'assets/care-stick.jpg'},
+  keep:  {name:'나를 지키는 面', idiom:'체면을 지키다', def:'흐트러지는 날에도 나다운 기준을 붙잡는 순간', cover:'assets/keep-cook.jpg'},
+  raise: {name:'함께 세우는 面', idiom:'체면을 세우다', def:'나와 누군가의 面이 서도록 당당히 나서는 순간', cover:'assets/raise-cat.jpg'}
+};
+// curated opening hang (the team's own photos)
+const CURATED = [
+  {id:'c1', room:'care',  src:'assets/care-stick.jpg',  text:'늦잠 잔 아침에도 슥, 오늘도 단정하게.', name:'sample_user01', product:true, at:7},
+  {id:'c2', room:'keep',  src:'assets/keep-cook.jpg',   text:'아무리 지쳐도 저녁은 꼭 해 먹기.', name:'sample_user02', at:6},
+  {id:'c3', room:'raise', src:'assets/raise-bday.jpg',  text:'친구 생일엔 케이크 들고 서프라이즈.', name:'sample_user03', at:5},
+  {id:'c4', room:'care',  src:'assets/care-flower.jpg', text:'수고한 나에게, 오늘은 꽃 한 다발.', name:'sample_user04', at:4},
+  {id:'c5', room:'keep',  src:'assets/keep-sky.jpg',    text:'힘든 날엔 하늘 보며 한숨 돌리기.', name:'sample_user05', at:3},
+  {id:'c6', room:'raise', src:'assets/raise-cat.jpg',   text:'심심한 우리 고양이랑 놀아주기.', name:'sample_user06', at:2},
+  {id:'c7', room:'care',  src:'assets/care-doll.jpg',   text:'아끼는 인형한테도 오늘의 착장을.', name:'sample_user07', at:1}
+];
+let uploads = [];          // [{id, owner, room, src, text, name, at}]
+let me = null, isOwner = false, db = null, assets = null, user = null, canWrite = null, writeBlocked = false;
+let backend = null, sb = null;   // 'supabase' | 'claude' | null
+const MINE_KEY = 'kahi-mine';
+const mineIds = (() => { try { return new Set(JSON.parse(localStorage.getItem(MINE_KEY) || '[]')); } catch (e) { return new Set(); } })();
+function rememberMine(id) { mineIds.add(id); try { localStorage.setItem(MINE_KEY, JSON.stringify([...mineIds])); } catch (e) {} }
+let current = [];          // items in the open view, for lightbox prev/next
+let lbIndex = 0;
+
+const $ = id => document.getElementById(id);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const all = () => [...uploads, ...CURATED].sort((a,b) => b.at - a.at);
+
+// hero glyph: the face made of faces
+(() => {
+  const srcs = ['care-stick','keep-cook','raise-cat','care-flower','raise-bday','keep-sky','care-doll','care-stick','care-flower'];
+  const pos = ['0% 0%','50% 0%','100% 0%','0% 50%','50% 50%','100% 50%','0% 100%','50% 100%','100% 100%'];
+  const g = $('glyph');
+  g.style.backgroundImage = srcs.map(s => `url(assets/${s}.jpg)`).join(',');
+  g.style.backgroundPosition = pos.join(',');
+})();
+
+function workEl(item, i, list) {
+  const b = el('button', 'work'); b.type = 'button';
+  b.setAttribute('aria-label', `${ROOMS[item.room].name}, ${item.text}`);
+  const fig = el('figure'); fig.style.margin = '0';
+  const fr = el('div', 'frame'); const img = el('img'); img.src = item.src; img.alt = item.text; img.loading = 'lazy'; fr.append(img);
+  const cap = el('figcaption');
+  if (item.mine) cap.append(el('span', 'new', '내가 건 面'));
+  cap.append(el('span', 'q', `“${item.text}”`));
+  cap.append(el('span', 'by', `${item.name || '익명의 관람객'}, ${ROOMS[item.room].name}`));
+  fig.append(fr, cap); b.append(fig);
+  b.addEventListener('click', () => openLightbox(list, i));
+  return b;
+}
+
+function renderHome() {
+  const latest = $('latest'); latest.replaceChildren();
+  const list = all().slice(0, 6);
+  list.forEach((it, i) => { const f = workEl(it, i, list); latest.append(f); });
+  const rooms = $('rooms'); rooms.replaceChildren();
+  Object.entries(ROOMS).forEach(([key, r]) => {
+    const row = el('div', 'room');
+    const fr = el('div', 'frame'); const img = el('img'); img.src = r.cover; img.alt = r.name; fr.append(img);
+    const lab = el('div', 'label');
+    const count = all().filter(x => x.room === key).length;
+    lab.append(el('b', null, r.name), el('span', 'idiom', r.idiom), el('p', null, r.def));
+    const a = el('a', 'btn small ghost', `전시실 들어가기 (${count}점)`); a.href = '#' + key;
+    lab.append(a);
+    row.append(fr, lab); rooms.append(row);
+  });
+}
+
+function renderGallery(key) {
+  const r = ROOMS[key];
+  $('g-title').textContent = r ? r.name : '전체 전시';
+  $('g-desc').textContent = r ? r.def : '세 전시실에 걸린 모든 面을 한 벽에 모았어요.';
+  $('g-idiom').hidden = !r; if (r) $('g-idiom').textContent = r.idiom;
+  document.querySelectorAll('[data-tab]').forEach(a => { if (a.dataset.tab === (key || 'gallery')) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
+  const list = all().filter(x => !r || x.room === key);
+  const grid = $('grid'); grid.replaceChildren();
+  if (!list.length) {
+    const e = el('div', 'empty'); e.append('아직 이 전시실은 비어 있어요. 첫 面을 걸어주세요.', el('br'));
+    const b = el('button', 'btn small', '내 바른 面 올리기'); b.type = 'button'; b.style.marginTop = '14px'; b.addEventListener('click', openUpload);
+    e.append(b); grid.append(e);
+  } else list.forEach((it, i) => grid.append(workEl(it, i, list)));
+  current = list;
+}
+
+function route() {
+  const h = (location.hash || '#home').slice(1);
+  const galleryKeys = ['gallery','care','keep','raise'];
+  const isGallery = galleryKeys.includes(h);
+  $('view-home').hidden = isGallery; $('view-gallery').hidden = !isGallery;
+  document.querySelectorAll('[data-nav]').forEach(a => {
+    const on = isGallery ? a.dataset.nav === 'gallery' : a.dataset.nav === (h === 'how' ? 'how' : 'home');
+    if (on) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
+  });
+  if (isGallery) { renderGallery(h === 'gallery' ? null : h); window.scrollTo(0, 0); }
+  else { renderHome(); if (h === 'how') $('how').scrollIntoView(); else window.scrollTo(0, 0); }
+}
+window.addEventListener('hashchange', route);
+
+// ---------- lightbox
+function openLightbox(list, i) { current = list; lbIndex = i; fillLightbox(); const d = $('lightbox'); if (!d.open) d.showModal(); }
+function fillLightbox() {
+  const it = current[lbIndex]; if (!it) return;
+  $('lb-img').src = it.src; $('lb-img').alt = it.text;
+  $('lb-room').textContent = `${ROOMS[it.room].name}, ${ROOMS[it.room].idiom}`;
+  $('lb-q').textContent = `“${it.text}”`;
+  $('lb-by').textContent = it.name || '익명의 관람객';
+  $('lb-tag').hidden = !it.product;
+  $('lb-prev').disabled = lbIndex <= 0; $('lb-next').disabled = lbIndex >= current.length - 1;
+  $('lb-del').hidden = !(it.owner && (it.owner === me || isOwner) && db);
+}
+$('lb-prev').addEventListener('click', () => { if (lbIndex > 0) { lbIndex--; fillLightbox(); } });
+$('lb-next').addEventListener('click', () => { if (lbIndex < current.length - 1) { lbIndex++; fillLightbox(); } });
+$('lb-close').addEventListener('click', () => $('lightbox').close());
+$('lightbox').addEventListener('keydown', e => { if (e.key === 'ArrowLeft') $('lb-prev').click(); if (e.key === 'ArrowRight') $('lb-next').click(); });
+$('lightbox').addEventListener('click', e => { if (e.target === $('lightbox')) $('lightbox').close(); });
+$('lb-del').addEventListener('click', async () => {
+  const it = current[lbIndex]; if (!it || !db) return;
+  const btn = $('lb-del'); btn.disabled = true;
+  try {
+    const ref = db.doc('gallery/' + it.owner);
+    const snap = await ref.get();
+    const items = (snap.exists ? (snap.data().items || []) : []).filter(x => x.id !== it.id);
+    await ref.set({ items });
+    $('lightbox').close(); toast('전시에서 내렸어요');
+  } catch (e) { toast('내리지 못했어요. 잠시 후 다시 해주세요'); }
+  btn.disabled = false;
+});
+
+// ---------- upload
+let pickedBlob = null;
+function openUpload() {
+  const ready = backend === 'supabase' || (backend === 'claude' && db && assets && me && !writeBlocked && canWrite !== false);
+  $('up-on').hidden = !ready; $('up-off').hidden = !!ready; $('up-hint').hidden = !ready;
+  if (!ready) {
+    $('up-off').textContent = !db
+      ? '이 화면에서는 갤러리에 바로 올릴 수 없어요. 인스타그램에 사진과 한 줄을 #바른면수집프로젝트로 올려주시면 전시실에 걸려요.'
+      : '올리기는 이 갤러리의 편집 권한이 있는 사람만 할 수 있어요. 인스타그램에 #바른면수집프로젝트로 올려주셔도 전시실에 걸려요.';
+  }
+  $('up-err').textContent = '';
+  $('upload').showModal();
+}
+document.querySelectorAll('[data-open-upload]').forEach(b => b.addEventListener('click', openUpload));
+document.querySelectorAll('[data-close-upload]').forEach(b => b.addEventListener('click', () => $('upload').close()));
+$('up-text').addEventListener('input', () => { $('up-count').textContent = $('up-text').value.length; });
+
+async function shrink(file) {
+  const bmp = await createImageBitmap(file);
+  const max = 1600, s = Math.min(1, max / Math.max(bmp.width, bmp.height));
+  const c = document.createElement('canvas'); c.width = Math.round(bmp.width * s); c.height = Math.round(bmp.height * s);
+  c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+  return await new Promise((res, rej) => c.toBlob(b => b ? res(b) : rej(new Error('encode')), 'image/jpeg', 0.86));
+}
+async function takeFile(file) {
+  $('up-err').textContent = '';
+  if (!file || !file.type.startsWith('image/')) { $('up-err').textContent = '사진 파일을 골라주세요.'; return; }
+  try {
+    pickedBlob = await shrink(file);
+    const p = $('up-prev'); p.src = URL.createObjectURL(pickedBlob); p.hidden = false;
+    $('up-drop-t').innerHTML = '<b>사진을 골랐어요</b><br>다른 사진으로 바꾸려면 여기를 눌러요';
+  } catch (e) {
+    pickedBlob = null;
+    $('up-err').textContent = '이 사진 형식은 열 수 없어요. JPG나 PNG로 올려주세요.';
+  }
+}
+$('up-file').addEventListener('change', e => takeFile(e.target.files[0]));
+const drop = document.querySelector('.drop');
+drop.addEventListener('dragover', e => { e.preventDefault(); });
+drop.addEventListener('drop', e => { e.preventDefault(); takeFile(e.dataTransfer.files[0]); });
+
+$('up-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const text = $('up-text').value.trim();
+  const room = document.querySelector('input[name=room]:checked').value;
+  const name = $('up-name').value.trim();
+  if (!pickedBlob) { $('up-err').textContent = '사진을 먼저 골라주세요.'; return; }
+  if (!text) { $('up-err').textContent = '한 줄을 적어주세요.'; $('up-text').focus(); return; }
+  const btn = $('up-submit'); btn.disabled = true; btn.textContent = '전시하는 중…';
+  try {
+    if (backend === 'supabase') {
+      const path = 'uploads/' + crypto.randomUUID() + '.jpg';
+      const up = await sb.storage.from('gallery').upload(path, pickedBlob, { contentType: 'image/jpeg' });
+      if (up.error) throw up.error;
+      const ins = await sb.from('posts').insert({ room, text, name: name || null, image_path: path }).select('id');
+      if (ins.error) throw ins.error;
+      if (ins.data && ins.data[0]) rememberMine(ins.data[0].id);
+      await loadSupabase();
+    } else {
+      const a = await assets.upload(pickedBlob);
+      const ref = db.doc('gallery/' + me);
+      const snap = await ref.get();
+      const items = snap.exists ? [...(snap.data().items || [])] : [];
+      const item = { id: 'u' + Date.now().toString(36), room, asset: a.id, text, name, at: Date.now() };
+      items.unshift(item);
+      await ref.set({ items: items.slice(0, 50) });
+    }
+    $('upload').close();
+    $('up-form').reset(); pickedBlob = null; $('up-prev').hidden = true; $('up-count').textContent = '0';
+    $('up-drop-t').innerHTML = '<b>사진 고르기</b><br>JPG·PNG 사진 한 장 (끌어다 놓아도 돼요)';
+    toast(`${ROOMS[room].name} 전시실에 걸렸어요`);
+    location.hash = room;
+  } catch (err) {
+    const code = err && err.code;
+    if (code === 'invalid_argument') { writeBlocked = true; $('up-err').textContent = '이 계정은 갤러리에 올릴 권한이 없어요.'; }
+    else if (code === 'quota_exceeded') $('up-err').textContent = '갤러리 저장 공간이 꽉 찼어요. 관리자에게 알려주세요.';
+    else $('up-err').textContent = '올리지 못했어요. 잠시 후 다시 눌러주세요.';
+  }
+  btn.disabled = false; btn.textContent = '전시하기';
+});
+
+let toastT;
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 2600); }
+
+// ---------- live data
+function rerender() {
+  const h = (location.hash || '#home').slice(1);
+  if (['gallery','care','keep','raise'].includes(h)) renderGallery(h === 'gallery' ? null : h); else renderHome();
+  if ($('lightbox').open) fillLightbox();
+}
+async function loadSupabase() {
+  const { data, error } = await sb.from('posts').select('id,created_at,room,text,name,image_path').order('created_at', { ascending: false }).limit(300);
+  if (error) throw error;
+  uploads = (data || []).filter(x => ROOMS[x.room] && typeof x.text === 'string' && typeof x.image_path === 'string').map(x => ({
+    id: x.id, room: x.room, text: x.text.slice(0, 40), name: (x.name || '').slice(0, 16),
+    src: sb.storage.from('gallery').getPublicUrl(x.image_path).data.publicUrl,
+    at: Date.parse(x.created_at) || 0, mine: mineIds.has(x.id)
+  }));
+  rerender();
+}
+function loadScript(src) { return new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.append(s); }); }
+route();
+(async () => {
+  const cfg = window.KAHI_SUPABASE || {};
+  if (!cfg.url || !cfg.anonKey) return;
+  try {
+    await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');
+    sb = window.supabase.createClient(cfg.url, cfg.anonKey, { auth: { persistSession: false } });
+    backend = 'supabase';
+    await loadSupabase();
+    setInterval(() => { if (!document.hidden) loadSupabase().catch(() => {}); }, 30000);
+  } catch (e) {
+    $('status').textContent = '새로 올라온 面을 불러오지 못했어요. 지금 보이는 건 개관 전시예요.';
+  }
+})();
+(async () => {
+  if ((window.KAHI_SUPABASE || {}).url) return;
+  try {
+    user = await window.claude?.use?.('user');
+    if (user) {
+      me = await user.id().catch(() => null);
+      try { isOwner = !!user.isOwner(); } catch (e) {}
+      try { canWrite = await user.can('data.write'); } catch (e) { canWrite = null; }
+    }
+    assets = await window.claude?.use?.('assets');
+    db = await window.claude?.use?.('db');
+  } catch (e) { db = null; }
+  if (!db) return;
+  backend = 'claude';
+  const st = $('status');
+  const timer = setTimeout(() => { st.textContent = '새로 올라온 面을 불러오지 못했어요. 지금 보이는 건 개관 전시예요.'; }, 10000);
+  db.collection('gallery').onSnapshot(snap => {
+    if (!snap.metadata.fromCache) { clearTimeout(timer); st.textContent = ''; }
+    const next = [];
+    snap.docs.forEach(d => {
+      const items = (d.data() && d.data().items) || [];
+      items.forEach(x => {
+        if (!x || typeof x.asset !== 'string' || !ROOMS[x.room] || typeof x.text !== 'string') return;
+        next.push({ id: x.id, owner: d.id, room: x.room, src: '/_blob/' + encodeURIComponent(x.asset), text: x.text.slice(0, 40),
+                    name: typeof x.name === 'string' ? x.name.slice(0, 16) : '', at: Number(x.at) || 0, mine: d.id === me });
+      });
+    });
+    uploads = next;
+    const h = (location.hash || '#home').slice(1);
+    if (['gallery','care','keep','raise'].includes(h)) renderGallery(h === 'gallery' ? null : h); else renderHome();
+    if ($('lightbox').open) fillLightbox();
+  }, () => { clearTimeout(timer); st.textContent = '새로 올라온 面을 불러오지 못했어요. 지금 보이는 건 개관 전시예요.'; });
+})();
+})();
+</script>
+</body>
+</html>
